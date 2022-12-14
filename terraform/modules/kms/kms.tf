@@ -1,6 +1,14 @@
 resource "aws_kms_key" "this" {
   description             = "Encryption Key for the S3 Bucket"
   deletion_window_in_days = 7
+
+  tags = merge(
+    var.tags,
+    {
+      "Name": "kms-${var.alias_name}",
+      "Type": "kms"
+    }
+  )
 }
 
 resource "aws_kms_alias" "this" {

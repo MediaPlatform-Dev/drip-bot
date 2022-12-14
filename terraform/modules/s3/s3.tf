@@ -18,6 +18,7 @@ resource "aws_s3_bucket" "this" {
   tags = merge(
     var.tags,
     {
+      "Name": "s3-${var.bucket_name}"
       "Type": "S3"
     }
   )

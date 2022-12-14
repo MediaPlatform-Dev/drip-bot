@@ -2,7 +2,7 @@
 region      = "ap-northeast-2"
 
 # Lambda
-lambda_name = "reaction-bot"
+lambda_function_name = "reaction-bot"
 
 # Tags
 tags = {
