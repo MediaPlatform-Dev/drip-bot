@@ -1,5 +1,5 @@
-resource "aws_iam_role" "iam_for_reaction_bot" {
-  name = "iam_for_reaction_bot"
+resource "aws_iam_role" "iam_role_reaction_bot" {
+  name = "iam-role-reaction-bot"
 
   assume_role_policy = <<EOF
 {
@@ -20,7 +20,7 @@ EOF
 
 resource "aws_lambda_function" "reaction_bot" {
   function_name = "reaction-bot"
-  role          = aws_iam_role.iam_for_reaction_bot.arn
+  role          = aws_iam_role.iam_role_reaction_bot.arn
 
   handler = "lambda_function.lambda_handler"
   runtime = "python3.9"
