@@ -20,6 +20,7 @@ EOF
 
 resource "aws_lambda_function" "reaction_bot" {
   function_name = "reaction-bot"
+  filename      = "reaction-bot.zip"
   role          = aws_iam_role.iam_role_reaction_bot.arn
 
   handler = "lambda_function.lambda_handler"
