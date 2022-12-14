@@ -1,0 +1,13 @@
+resource "aws_kms_key" "this" {
+  description             = "Encryption Key for the S3 Bucket"
+  deletion_window_in_days = 7
+}
+
+resource "aws_kms_alias" "this" {
+  name          = "alias/${var.alias_name}"
+  target_key_id = aws_kms_key.this.key_id
+
+  depends_on = [
+    aws_kms_key.this
+  ]
+}
