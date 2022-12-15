@@ -59,6 +59,9 @@ resource "aws_s3_bucket_policy" "this" {
       "Statement": [
         {
           "Effect": "Allow",
+          "Principal": {
+            "AWS": data.aws_caller_identity.this.arn
+          },
           "Action": "s3:ListBucket",
           "Resource": [
             "arn:aws:s3:::${var.s3_bucket_name}"
@@ -66,6 +69,9 @@ resource "aws_s3_bucket_policy" "this" {
         },
         {
           "Effect": "Allow",
+          "Principal": {
+            "AWS": data.aws_caller_identity.this.arn
+          },
           "Action": [
             "s3:GetObject",
             "s3:PutObject"
