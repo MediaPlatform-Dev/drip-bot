@@ -1,32 +1,20 @@
-resource "aws_iam_role" "iam_role_reaction_bot" {
-  name = "iam-role-reaction-bot"
+module "s3" {
+  source = "modules/s3"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
+  s3_bucket_name = var.lambda_function_name
+
+  tags = var.tags
+}
+
+module "lambda" {
+  source = "modules/lambda"
+
+  lambda_function_name = var.lambda_function_name
+  s3_bucket_name = module.s3.s3_bucket_name
+
+  depends_on = [
+    module.s3
   ]
-}
-EOF
-}
 
-resource "aws_lambda_function" "reaction_bot" {
-  function_name = "reaction-bot"
-  filename      = "reaction-bot.zip"
-  role          = aws_iam_role.iam_role_reaction_bot.arn
-
-  handler = "lambda_function.lambda_handler"
-  runtime = "python3.9"
-
-  tags = {
-    "dept": "media-platform"
-  }
+  tags = var.tags
 }
