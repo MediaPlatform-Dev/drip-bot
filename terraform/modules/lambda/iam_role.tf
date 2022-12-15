@@ -29,8 +29,6 @@ resource "aws_iam_role_policy" "this" {
       {
         "Effect": "Allow",
         "Action": [
-          "kms:Decrypt",
-          "kms:GenerateDataKey",
           "s3:ListBucket",
           "s3:HeadObject",
           "s3:GetObject",
@@ -46,14 +44,5 @@ resource "aws_iam_role_policy" "this" {
 
   depends_on = [
     aws_iam_role.this
-  ]
-}
-
-resource "aws_iam_role_policy_attachment" "this" {
-  role       = aws_iam_role.this.name
-  policy_arn = aws_iam_policy.this.arn
-
-  depends_on = [
-    aws_iam_role_policy.this
   ]
 }
