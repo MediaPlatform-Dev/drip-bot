@@ -1,0 +1,60 @@
+# This is a basic workflow to help you get started with Actions
+
+name: reaction-bot CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '.github/workflows/reaction-bot.yml'
+      - 'terraform/'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "workflow"
+  workflow:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ap-northeast-2 # Seoul
+      AWS_LAMBDA_FUNCTION_NAME: reaction-bot
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Install Python Packages
+      - name: Install Python Packages
+        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}/python/
+        run: |
+          mkdir packages
+          pip install -r requirements.txt -t packages/
+          ls -a packages
+
+      # Make a Zip File
+      - name: Make a Zip File
+        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}/python/
+        run: zip -rq ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip .
+
+      # Upload to S3 Bucket
+      - name: Upload to S3 Bucket
+        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}/python/
+        run: aws s3 cp ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip ${{ env.AWS_LAMBDA_FUNCTION_NAME }}
+
+      # Remove a Zip File
+      - name: Remove a Zip File
+        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}/python/
+        run: rm ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip
