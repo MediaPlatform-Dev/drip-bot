@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "this" {
   tags = merge(
     var.tags,
     {
-      "Name": "s3-${var.s3_bucket_name}"
+      "Name": aws_s3_bucket.this.bucket_domain_name,
       "Type": "S3"
     }
   )
