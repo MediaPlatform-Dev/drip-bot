@@ -8,6 +8,8 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'python/'
     paths-ignore:
       - '.github/workflows/reaction-bot.yml'
       - 'terraform/'
