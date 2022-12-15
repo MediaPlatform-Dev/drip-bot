@@ -1,3 +1,2 @@
-variable "bucket_name" {}
-variable "kms_alias_id" {}
+variable "s3_bucket_name" {}
 variable "tags" {}
