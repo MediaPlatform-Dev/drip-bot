@@ -1,5 +1,5 @@
 module "s3" {
-  source = "modules/s3"
+  source = "./modules/s3"
 
   s3_bucket_name = var.lambda_function_name
 
@@ -7,7 +7,7 @@ module "s3" {
 }
 
 module "lambda" {
-  source = "modules/lambda"
+  source = "./modules/lambda"
 
   lambda_function_name = var.lambda_function_name
   s3_bucket_name = module.s3.s3_bucket_name
