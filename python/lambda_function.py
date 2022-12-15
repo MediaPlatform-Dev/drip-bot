@@ -31,6 +31,6 @@ def lambda_handler(event, _context):
 
 
 if __name__ == '__main__':
-    event = ''
+    event = 'Test Message'
     _context = ''
     lambda_handler(event, _context)
