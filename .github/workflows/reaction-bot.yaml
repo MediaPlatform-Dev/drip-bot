@@ -37,7 +37,7 @@ jobs:
 
       # Install Python Packages
       - name: Install Python Packages
-        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}/python/
+        working-directory: ./python/
         run: |
           mkdir packages
           pip install -r requirements.txt -t packages/
@@ -45,15 +45,15 @@ jobs:
 
       # Make a Zip File
       - name: Make a Zip File
-        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}/python/
+        working-directory: ./python/
         run: zip -rq ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip .
 
       # Upload to S3 Bucket
       - name: Upload to S3 Bucket
-        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}/python/
+        working-directory: ./python/
         run: aws s3 cp ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip ${{ env.AWS_LAMBDA_FUNCTION_NAME }}
 
       # Remove a Zip File
       - name: Remove a Zip File
-        working-directory: ./${{ env.AWS_LAMBDA_FUNCTION_NAME }}/python/
+        working-directory: ./python/
         run: rm ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip
