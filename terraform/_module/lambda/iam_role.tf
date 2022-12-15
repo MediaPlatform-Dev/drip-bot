@@ -21,7 +21,8 @@ resource "aws_iam_role" "this" {
     {
       "Name": "iam-role-${var.lambda_function_name}",
       "Type": "role"
-    })
+    }
+  )
 }
 
 resource "aws_iam_policy" "this" {
@@ -34,8 +35,11 @@ resource "aws_iam_policy" "this" {
         {
           "Effect": "Allow",
           "Action": [
+            "kms:Decrypt",
+            "kms:GenerateDataKey",
             "s3:ListBucket",
             "s3:GetObject",
+            "s3:GetObjectVersion",
             "s3:CopyObject",
             "s3:HeadObject"
           ],
@@ -57,7 +61,8 @@ resource "aws_iam_policy" "this" {
     {
       "Name": "iam-policy-${var.lambda_function_name}",
       "Type": "policy"
-    })
+    }
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "this" {
