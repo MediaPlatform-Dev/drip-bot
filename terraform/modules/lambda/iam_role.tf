@@ -20,7 +20,7 @@ resource "aws_iam_role" "this" {
   tags = merge(
     var.tags,
     {
-      "Name": aws_iam_role.this.name,
+      "Name": "iam-role-${var.lambda_function_name}",
       "Type": "role"
     })
 }
@@ -55,7 +55,7 @@ resource "aws_iam_policy" "this" {
   tags = merge(
     var.tags,
     {
-      "Name": aws_iam_policy.this.name,
+      "Name": "iam-policy-${var.lambda_function_name}",
       "Type": "policy"
     })
 }
