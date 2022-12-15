@@ -2,11 +2,11 @@ import os
 import sys
 import json
 
-from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
-
 # Thirdparty Libraries
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'packages'))
+
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
 
 
 # JSON 파일을 읽어서 전역 변수로 자동 생성
