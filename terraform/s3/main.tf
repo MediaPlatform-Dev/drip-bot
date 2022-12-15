@@ -1,7 +1,7 @@
 module "kms" {
   source = "../_module/kms"
 
-  kms_deletion_window_in_days = 7
+  kms_deletion_window_in_days = var.kms_deletion_window_in_days
   kms_alias_name              = var.s3_bucket_name
 
   tags = var.tags
