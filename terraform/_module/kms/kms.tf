@@ -1,6 +1,6 @@
 resource "aws_kms_key" "this" {
    description             = "Encryption Key for the S3 Bucket"
-   deletion_window_in_days = 7
+   deletion_window_in_days = var.kms_deletion_window_in_days
 
    tags = merge(
      var.tags,
@@ -12,7 +12,7 @@ resource "aws_kms_key" "this" {
  }
 
  resource "aws_kms_alias" "this" {
-   name          = "alias/${var.kms_alias_name}"
+   name          = "alias/${lower(var.kms_alias_name)}"
    target_key_id = aws_kms_key.this.key_id
 
    depends_on = [
