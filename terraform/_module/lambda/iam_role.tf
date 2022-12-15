@@ -10,8 +10,7 @@ resource "aws_iam_role" "this" {
           "Principal": {
             "Service": "lambda.amazonaws.com"
           },
-          "Effect": "Allow",
-          "Sid": ""
+          "Effect": "Allow"
         }
       ]
     }
@@ -36,12 +35,13 @@ resource "aws_iam_policy" "this" {
           "Effect": "Allow",
           "Action": [
             "s3:ListBucket",
-            "s3:HeadObject",
             "s3:GetObject",
-            "s3:GetObjectVersion"
+            "s3:CopyObject",
+            "s3:HeadObject"
           ],
           "Resource": [
-            "*",
+            "arn:aws:s3:::${var.lambda_function_name}",
+            "arn:aws:s3:::${var.lambda_function_name}/*"
           ]
         }
       ]
@@ -61,7 +61,7 @@ resource "aws_iam_policy" "this" {
 }
 
 resource "aws_iam_role_policy_attachment" "this" {
-  role       = aws_iam_role.this.name
+  role       = aws_iam_role.this.id
   policy_arn = aws_iam_policy.this.arn
 
   depends_on = [
