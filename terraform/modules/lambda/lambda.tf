@@ -15,7 +15,7 @@ resource "aws_lambda_function" "this" {
   tags = merge(
     var.tags,
     {
-      "Name": "lambda-${var.lambda_function_name}",
+      "Name": aws_lambda_function.this.function_name,
       "Type": "lambda"
     }
   )

@@ -16,11 +16,17 @@ resource "aws_iam_role" "this" {
     ]
   }
   EOF
+
+  tags = merge(
+    var.tags,
+    {
+      "Name": aws_iam_role.this.name,
+      "Type": "role"
+    })
 }
 
 resource "aws_iam_policy" "this" {
   name = "iam-policy-${var.lambda_function_name}"
-  role = aws_iam_role.this.id
 
   policy = <<EOF
   {
@@ -29,8 +35,6 @@ resource "aws_iam_policy" "this" {
       {
         "Effect": "Allow",
         "Action": [
-          "kms:Decrypt",
-          "kms:GenerateDataKey",
           "s3:ListBucket",
           "s3:HeadObject",
           "s3:GetObject",
@@ -47,6 +51,13 @@ resource "aws_iam_policy" "this" {
   depends_on = [
     aws_iam_role.this
   ]
+
+  tags = merge(
+    var.tags,
+    {
+      "Name": aws_iam_policy.this.name,
+      "Type": "policy"
+    })
 }
 
 resource "aws_iam_role_policy_attachment" "this" {
