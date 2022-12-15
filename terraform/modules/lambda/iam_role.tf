@@ -1,21 +1,21 @@
 resource "aws_iam_role" "this" {
   name = "iam-role-${var.lambda_function_name}"
 
-  assume_role_policy = <<EOF
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Action": "sts:AssumeRole",
-        "Principal": {
-          "Service": "lambda.amazonaws.com"
-        },
-        "Effect": "Allow",
-        "Sid": ""
-      }
-    ]
-  }
-  EOF
+  assume_role_policy = jsonencode(
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": "sts:AssumeRole",
+          "Principal": {
+            "Service": "lambda.amazonaws.com"
+          },
+          "Effect": "Allow",
+          "Sid": ""
+        }
+      ]
+    }
+  )
 
   tags = merge(
     var.tags,
@@ -28,25 +28,25 @@ resource "aws_iam_role" "this" {
 resource "aws_iam_policy" "this" {
   name = "iam-policy-${var.lambda_function_name}"
 
-  policy = <<EOF
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": [
-          "s3:ListBucket",
-          "s3:HeadObject",
-          "s3:GetObject",
-          "s3:GetObjectVersion"
-        ],
-        "Resource": [
-          "*",
-        ]
-      }
-    ]
-  }
-  EOF
+  policy = jsonencode(
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket",
+            "s3:HeadObject",
+            "s3:GetObject",
+            "s3:GetObjectVersion"
+          ],
+          "Resource": [
+            "*",
+          ]
+        }
+      ]
+    }
+  )
 
   depends_on = [
     aws_iam_role.this
