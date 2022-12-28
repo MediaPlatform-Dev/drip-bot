@@ -1,11 +1,10 @@
 # General
 region      = "ap-northeast-2"
 
-# s3
-s3_bucket_name = "reaction-bot"
-
 # Lambda
-lambda_function_name = "reaction-bot"
+function_name = "reaction-bot"
+handler = "lambda_function.lambda_handler"
+runtime = "python3.9"
 
 # Tags
 tags = {

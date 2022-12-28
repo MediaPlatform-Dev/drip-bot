@@ -3,8 +3,8 @@ variable "region" {
   type        = string
 }
 
-variable "lambda_function_name" {}
-
-variable "s3_bucket_name" {}
+variable "function_name" {}
+variable "handler" {}
+variable "runtime" {}
 
 variable "tags" {}
