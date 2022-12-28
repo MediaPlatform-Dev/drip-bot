@@ -19,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ap-northeast-2 # Seoul
-      AWS_LAMBDA_FUNCTION_NAME: reaction-bot
 
+    if: github.repository_owner == 'thkim0022'
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -46,14 +46,17 @@ jobs:
       # Make a Zip File
       - name: Make a Zip File
         working-directory: ./python/
-        run: zip -rq ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip .
+        run: zip -rq ${{ github.event.repository.name }}.zip .
 
-      # Upload to S3 Bucket
-      - name: Upload to S3 Bucket
-        working-directory: ./python/
-        run: aws s3 cp ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip s3://${{ env.AWS_LAMBDA_FUNCTION_NAME }}
+      # Deploy to AWS Lambda
+      - name: Deploy to AWS Lambda
+        working-directory: ./${{ github.event.repository.name }}
+        run: |
+          aws lambda update-function-code \
+          --function-name ${{ github.event.repository.name }} \
+          --zip-file fileb://${{ github.event.repository.name }}.zip
 
       # Remove a Zip File
       - name: Remove a Zip File
         working-directory: ./python/
-        run: rm ${{ env.AWS_LAMBDA_FUNCTION_NAME }}.zip
+        run: rm ${{ github.event.repository.name }}.zip
